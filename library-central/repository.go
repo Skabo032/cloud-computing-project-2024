@@ -25,7 +25,7 @@ type User struct {
 
 const (
 	mongoURI        = "mongodb://localhost:27017"
-	database        = "your_database_name"
+	database        = "testing"
 	collection      = "users"
 	connectTimeout  = 10 * time.Second
 )
@@ -57,6 +57,11 @@ func (r *Repository) Close() {
 func (r *Repository) CreateUser(user User) error {
 	collection := r.client.Database(database).Collection(collection)
 	_, err := collection.InsertOne(context.Background(), user)
+	if err != nil {
+		fmt.Println("Error while creating a user: ", err)
+		return err
+	}
+	fmt.Println("New user created")
 	return err
 }
 
@@ -96,6 +101,16 @@ func (r *Repository) UpdateUser(id primitive.ObjectID, newName string) error {
 	filter := bson.M{"_id": id}
 	update := bson.M{"$set": bson.M{"name": newName}}
 	_, err := collection.UpdateOne(context.Background(), filter, update)
+	return err
+}
+
+// Increment num of books lent
+func (r *Repository) IncrementNumOfBooksLent(id primitive.ObjectID) error {
+	collection := r.client.Database(database).Collection(collection)
+	filter := bson.M{"_id": id}
+	update := bson.D{{"$inc", bson.D{{"numberOfBooks", 1}}}}
+	_, err := collection.UpdateOne(context.Background(), filter, update)
+	fmt.Println("Number of books incremented for user: ", id)
 	return err
 }
 
