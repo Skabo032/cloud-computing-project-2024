@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
+	//"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -20,7 +20,16 @@ type LendingRequest struct {
 	UserJMBG string `bson:"userJmbg"`
 	Title string `bson:"title"`
 	Author string `bson:"author"`
+	ISBN string `bson:isbn`
 	LendingDate string `bson:"lendingDate"`
+}
+
+type User struct {
+	ID   primitive.ObjectID `bson:"_id,omitempty"`
+	JMBG string				`bson:"jmbg"`
+	Name string 			`bson:"name"`
+	Address string			`bson:"address"`
+	NumberOfBooks int    	`bson:"numberOfBooks"`
 }
 
 const (
@@ -54,9 +63,9 @@ func (r *Repository) Close() {
 }
 
 // Create
-func (r *Repository) CreateUser(user User) error {
+func (r *Repository) CreateLendingRequest(lendingRequest LendingRequest) error {
 	collection := r.client.Database(database).Collection(collection)
-	_, err := collection.InsertOne(context.Background(), user)
+	_, err := collection.InsertOne(context.Background(), lendingRequest)
 	if err != nil {
 		fmt.Println("Error while creating a lending request: ", err)
 		return err
