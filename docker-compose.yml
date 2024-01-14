@@ -1,0 +1,85 @@
+version: '3'
+
+services:
+  library-central:
+    build: ./library-central
+    container_name: library-central
+    ports: 
+      - 8081:8080
+    environment:
+      - MONGO_CONNECTION_STRING=mongodb://mongo-central:27017
+    depends_on:
+      - mongo-central
+  library-ns:
+    build: ./library-city
+    container_name: library-ns
+    ports: 
+      - 8082:8080
+    environment:
+      - CENTRAL_LIBRARY_URL=http://library-central:8080
+      - MONGO_CONNECTION_STRING=mongodb://mongo-ns:27017
+    depends_on:
+      - mongo-ns
+      - library-central
+  library-bg:
+    build: ./library-city
+    container_name: library-bg
+    ports: 
+      - 8083:8080
+    environment:
+      - CENTRAL_LIBRARY_URL=http://library-central:8080
+      - MONGO_CONNECTION_STRING=mongodb://mongo-bg:27017
+    depends_on:
+      - mongo-bg
+      - library-central
+  library-nis:
+    build: ./library-city
+    container_name: library-nis
+    ports: 
+      - 8084:8080
+    environment:
+      - CENTRAL_LIBRARY_URL=http://library-central:8080
+      - MONGO_CONNECTION_STRING=mongodb://mongo-nis:27017
+    depends_on:
+      - mongo-nis
+      - library-central
+
+  mongo-central:
+    image: 'mongo'
+    volumes:
+      - mongo_central:/data/db
+    container_name: mongo-central
+    ports:
+      - 27021:27017
+
+  mongo-ns:
+    image: 'mongo'
+    volumes:
+      - mongo_ns:/data/db
+    container_name: mongo-ns
+    ports:
+      - 27018:27017
+
+  mongo-bg:
+    image: 'mongo'
+    volumes:
+      - mongo_bg:/data/db
+    container_name: mongo-bg
+    ports:
+      - 27019:27017
+
+  mongo-nis:
+    image: 'mongo'
+    volumes:
+      - mongo_nis:/data/db
+    container_name: mongo-nis
+    ports:
+      - 27020:27017
+
+volumes:
+  mongo_central:
+  mongo_ns:
+  mongo_bg:
+  mongo_nis:
+
+  

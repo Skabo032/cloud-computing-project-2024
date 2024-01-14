@@ -9,6 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"os"
 )
 
 type Repository struct {
@@ -33,7 +34,6 @@ type User struct {
 }
 
 const (
-	mongoURI        = "mongodb://localhost:27017"
 	database        = "db-ns"
 	collection      = "lending"
 	connectTimeout  = 10 * time.Second
@@ -43,7 +43,7 @@ func NewRepository() (*Repository, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), connectTimeout)
 	defer cancel()
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoURI))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(os.Getenv("MONGO_CONNECTION_STRING")))
 	if err != nil {
 		return nil, err
 	}

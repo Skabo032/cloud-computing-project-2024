@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"time"
+	"os"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -33,7 +34,6 @@ type LendingRequest struct {
 }
 
 const (
-	mongoURI        = "mongodb://localhost:27017"
 	database        = "testing"
 	collection      = "users"
 	connectTimeout  = 10 * time.Second
@@ -43,7 +43,7 @@ func NewRepository() (*Repository, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), connectTimeout)
 	defer cancel()
 
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoURI))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(os.Getenv("MONGO_CONNECTION_STRING")))
 	if err != nil {
 		return nil, err
 	}

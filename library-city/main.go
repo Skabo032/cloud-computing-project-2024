@@ -69,7 +69,7 @@ func userHandler(w http.ResponseWriter, r *http.Request){
 			NumberOfBooks:  0,
 		}
 		
-		targetURL := "http://localhost:8080/user"
+		targetURL := os.Getenv("CENTRAL_LIBRARY_URL") + "/user";
 
 		// Marshal payload to JSON
 		payloadBytes, err := json.Marshal(newUser)
@@ -129,7 +129,7 @@ func bookLendingHandler(w http.ResponseWriter, r *http.Request){
 			LendingDate:  bodyJson.LendingDate,
 		}
 
-		targetURL := "http://localhost:8080/user/bookLending"
+		targetURL := os.Getenv("CENTRAL_LIBRARY_URL") + "/user/bookLending";
 
 		// Marshal payload to JSON
 		payloadBytes, err := json.Marshal(newLendingRequest)
