@@ -2,7 +2,7 @@ version: '3'
 
 services:
   library-central:
-    build: ./library-central
+    image: 'skabo032/library-central:latest'
     container_name: library-central
     ports: 
       - 8081:8080
@@ -11,7 +11,7 @@ services:
     depends_on:
       - mongo-central
   library-ns:
-    build: ./library-city
+    image: 'skabo032/library-city:latest'
     container_name: library-ns
     ports: 
       - 8082:8080
@@ -22,7 +22,7 @@ services:
       - mongo-ns
       - library-central
   library-bg:
-    build: ./library-city
+    image: 'skabo032/library-city:latest'
     container_name: library-bg
     ports: 
       - 8083:8080
@@ -33,7 +33,7 @@ services:
       - mongo-bg
       - library-central
   library-nis:
-    build: ./library-city
+    image: 'skabo032/library-city:latest'
     container_name: library-nis
     ports: 
       - 8084:8080
