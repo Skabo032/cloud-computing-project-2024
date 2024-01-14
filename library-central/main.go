@@ -13,8 +13,6 @@ import (
 		"net/http"
 		"encoding/json"
 		"io/ioutil"
-		//"time"
-		//"library-central/repository"
 )
 
 var repo *Repository
@@ -88,7 +86,7 @@ func userHandler(w http.ResponseWriter, r *http.Request){
 			return
 		} else {
 			log.Println("User with that JMBG already exists!")
-			http.Error(w, http.StatusText(500), 500)
+			http.Error(w, http.StatusText(501), 501)
 			return
 		}
 
@@ -108,15 +106,15 @@ func bookLendingHandler(w http.ResponseWriter, r *http.Request){
 			return
 		}
 
-		// Unmarshal JSON into a User struct
-		var bodyJson User
+		// Unmarshal JSON into a LendingRequest struct
+		var bodyJson LendingRequest
 		err = json.Unmarshal(body, &bodyJson)
 		if err != nil {
 			http.Error(w, "Error unmarshaling JSON", http.StatusBadRequest)
 			return
 		}
 
-		user, err := repo.ReadUserByJmbg(bodyJson.JMBG)
+		user, err := repo.ReadUserByJmbg(bodyJson.UserJMBG)
 		if err != nil {
 			log.Println("Error reading user by JMBG:", err)
 			http.Error(w, http.StatusText(500), 500)
@@ -133,7 +131,7 @@ func bookLendingHandler(w http.ResponseWriter, r *http.Request){
 			return
 		} else {
 			log.Println("User already has 3 or more books, can't take more");
-			http.Error(w, http.StatusText(500), 500)
+			http.Error(w, http.StatusText(501), 501)
 			return
 		}
 	}

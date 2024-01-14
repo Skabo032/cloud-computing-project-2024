@@ -23,6 +23,15 @@ type User struct {
 	NumberOfBooks int    	`bson:"numberOfBooks"`
 }
 
+type LendingRequest struct {
+	ID   primitive.ObjectID `bson:"_id,omitempty"`
+	UserJMBG string `bson:"userJmbg"`
+	Title string `bson:"title"`
+	Author string `bson:"author"`
+	ISBN string `bson:isbn`
+	LendingDate string `bson:"lendingDate"`
+}
+
 const (
 	mongoURI        = "mongodb://localhost:27017"
 	database        = "testing"
