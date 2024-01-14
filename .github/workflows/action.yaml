@@ -24,11 +24,11 @@ jobs:
         with:
           context: ./library-central
           push: true
-          tags: Skabo032/library-central:latest
+          tags: skabo032/library-central:latest
 
       - name: Build and push Docker library-city image
         uses: docker/build-push-action@v5
         with:
           context: ./library-city
           push: true
-          tags: Skabo032/library-city:latest
+          tags: skabo032/library-city:latest
